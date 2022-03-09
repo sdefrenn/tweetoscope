@@ -5,7 +5,7 @@ function genTreeFor(rootTweet: Tweet) {
 
   let tweetList: DisplayTweet[] = [];
   let position = {x: 50, y: 100};
-  let queue = [rootTweet];
+  let queue = tweetList;
 
 
   // add root first
@@ -23,12 +23,13 @@ function genTreeFor(rootTweet: Tweet) {
     
     for(const reply of currentTweet.replies) {
       
-      tweetList.push(new DisplayTweet(reply, {x: position.x, y: position.y}));
+      let replyDisplay = new DisplayTweet(reply, {x: position.x, y: position.y}, currentTweet);
+      tweetList.push(replyDisplay)
       previousLength = reply.text.length * 10;
       position.x += previousLength;
       // if the current reply has itself its own replies, add the reply to the queue
       if(reply.replies.length > 0) {
-        queue.push(reply);
+        queue.push(replyDisplay);
       }
     }
   }
