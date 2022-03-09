@@ -2,9 +2,11 @@ import React from "react";
 import styled from "styled-components";
 
 export const Container = styled.div`
-background-color: #242c38; 
-position: static;
-border: 1px solid grey;
+position: relative;
+border: 1px solid blue;
+width: 80vw;
+height: 90vh;
+overflow: hidden;
 *{
 margin: 0;
 padding: 0;
