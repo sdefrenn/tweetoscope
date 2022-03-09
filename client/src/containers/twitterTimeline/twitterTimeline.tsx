@@ -19,6 +19,7 @@ function TwitterTimeline({someProperty}: {someProperty: string}) {
                         if(dTweet.displayParent!=null){
                             return <TweetArc rootTweet={dTweet.displayParent} childTweet={dTweet}></TweetArc>
                         }
+                        return <></>
                     })
                     }
                 </SVGContainer>
