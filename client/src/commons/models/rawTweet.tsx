@@ -11,9 +11,11 @@ class RawTweet{
     private _text: string;
     private _replies: RawTweet[]; 
     private _parent: RawTweet | null;
+    private _id: string;
 
-    constructor(name: string, username: string, date: Date, text: string, parent?: RawTweet | null, replies?: RawTweet[])  {
-
+    constructor(id: string, name: string, username: string, date: Date, text: string, parent?: RawTweet | null, replies?: RawTweet[])  {
+        
+        this._id=id;
         this._name = name;
         this._username = username;
         this._date = date;
@@ -34,7 +36,7 @@ class RawTweet{
     }
 
     clone(): RawTweet{
-        return new RawTweet(this.name, this.username, this.date, this.text, this.parent, this.replies);
+        return new RawTweet(this.id, this.name, this.username, this.date, this.text, this.parent, this.replies);
     }
 
     
@@ -66,6 +68,10 @@ class RawTweet{
 
     get stringDate(): string{
         return dateToString(this._date);
+    }
+
+    get id(): string{
+        return this._id;
     }
 }
 

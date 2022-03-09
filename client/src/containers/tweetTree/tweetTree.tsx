@@ -5,7 +5,7 @@ import { TweetTreeDiv } from "./styles";
 function TweetTree({tweets}: {tweets: DisplayTweet[]}) {
 
   return <TweetTreeDiv>
-            {tweets.map(tweet => <TweetNode data={tweet}/>)}
+            {tweets.map(tweet => <TweetNode key={tweet.id} data={tweet}/>)}
         </TweetTreeDiv>;
 }
 
