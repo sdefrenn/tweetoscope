@@ -22,7 +22,10 @@ function App() {
       <TwitterTimeline someProperty="test"></TwitterTimeline>
       
     </div>
+
   );
+
 }
+
 
 export default App;
