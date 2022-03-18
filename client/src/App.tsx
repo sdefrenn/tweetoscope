@@ -1,7 +1,10 @@
 import React from "react";
-import {Link, Outlet} from "react-router-dom";
-import logo from "./logo.svg";
+import { Link, Outlet } from "react-router-dom";
+// import logo from "./logo.svg";
+
 import TwitterTimeline from "./containers/twitterTimeline/twitterTimeline";
+import TwitterLogger from "./containers/twitterLogger";
+
 /**
  * Entry point for the app
  * Initialize app-wide systems (request service)
@@ -9,11 +12,20 @@ import TwitterTimeline from "./containers/twitterTimeline/twitterTimeline";
  */
 
 function App() {
+
   return (
+    
     <div className="App">
+
+      <TwitterLogger></TwitterLogger>
+
       <TwitterTimeline someProperty="test"></TwitterTimeline>
+      
     </div>
+
   );
+
 }
+
 
 export default App;
