@@ -3,14 +3,10 @@ import styled from "styled-components";
 
 export const Container = styled.div`
 position: relative;
-width: 100vw;
-height: 100vh;
-*{
-margin: 0;
-padding: 0;
-box-sizing: border-box;
-font-family: 'VT323', monospace;
-}
+border: 1px solid blue;
+width: 80vw;
+height: 90vh;
+overflow: hidden;
 `;
 
 export const SVGContainer = styled.svg`
