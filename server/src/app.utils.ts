@@ -6,20 +6,16 @@ export async function AESCipher(mes, pwd) {
   // random bytes added
   const iv = randomBytes(16);
   const password = pwd;
-  console.log(iv);
   const salt = randomBytes(128);
   // The key length is dependent on the algorithm.
   // In this case for aes256, it is 32 bytes.
   const key = (await promisify(scrypt)(password, salt, 32)) as Buffer;
-  console.log('key', key);
   const cipher = createCipheriv('aes-256-ctr', key, iv);
   const textToEncrypt = mes;
-  console.log('txt', textToEncrypt);
   const encryptedText = Buffer.concat([
     cipher.update(textToEncrypt),
     cipher.final(),
   ]);
-  console.log('encrypt:', encryptedText);
   return [encryptedText, key, iv];
 }
 
