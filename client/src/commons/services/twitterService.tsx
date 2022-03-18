@@ -19,15 +19,11 @@ class TwitterService{
     temp_res.forEach(tweet => temp_tweet.addReply(tweet));
 
     this.timeline.push(temp_tweet);
-
-
     }
-
 
     getTimeline(){
         return this.timeline;
     }
-
 }
 
 export default TwitterService;
