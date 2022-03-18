@@ -20,7 +20,8 @@ export class TwitterStrategy extends PassportStrategy(Strategy, 'twitter') {
     refreshToken: string,
     profile: any,
     done: VerifyCallback,
-  ): Promise<any> {
-    console.log(accessToken);
+  ): Promise<{token: string, refresh: string}> {
+    //maybe encrypt from here instead?
+   return {token: accessToken, refresh: refreshToken}; 
   }
 }
