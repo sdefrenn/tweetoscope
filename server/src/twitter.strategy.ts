@@ -3,14 +3,15 @@ import { Strategy, VerifyCallback } from '@superfaceai/passport-twitter-oauth2';
 
 import { Injectable } from '@nestjs/common';
 import { AESCipher } from './app.utils';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class TwitterStrategy extends PassportStrategy(Strategy, 'twitter') {
-  constructor() {
+  constructor(private configService: ConfigService) {
     super({
-      clientID: 'T05Jb3hlTWhYSy1DWlJycGsyM286MTpjaQ',
-      clientSecret: 'ZMOK6KOzGq1-YRTe3Jr_4b-rdS2AuKt1zhq0d4fvgRSBtEbPz9',
-      callbackURL: 'http://127.0.0.1:3000/twitter/redirect',
+      clientID: configService.get('CLIENTID'),
+      clientSecret: configService.get('CLIENTSECRET'),
+      callbackURL: configService.get('CALLBACKURL'),
       scope: [
         'tweet.read',
         'tweet.write',
@@ -40,8 +41,11 @@ export class TwitterStrategy extends PassportStrategy(Strategy, 'twitter') {
   ): Promise<{ token: any; refresh: any }> {
     //maybe encrypt from here instead?
 
-    let tokenAES = AESCipher(accessToken);
-    let refreshAES = AESCipher(refreshToken);
+    let tokenAES = await AESCipher(accessToken, this.configService.get('KEY'));
+    let refreshAES = await AESCipher(
+      refreshToken,
+      this.configService.get('KEY'),
+    );
     return { token: tokenAES, refresh: refreshAES };
   }
 }

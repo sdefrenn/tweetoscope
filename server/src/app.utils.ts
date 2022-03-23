@@ -1,12 +1,13 @@
+import { ConfigService } from '@nestjs/config';
 import { createCipheriv, randomBytes } from 'crypto';
 import { createDecipheriv } from 'crypto';
 
-export async function AESCipher(mes) {
+export async function AESCipher(mes, key) {
   // random bytes added
 
   //don't know what to do with the value, should it be constant ?
   const iv = randomBytes(16);
-  const key = randomBytes(16).toString('hex');
+
   // The key length is dependent on the algorithm.
   // In this case for aes256, it is 32 bytes.
 
