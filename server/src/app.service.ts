@@ -15,7 +15,7 @@ export class AppService {
    * @returns what needs to be passed to the client (AES of the token(s))
    * @returns null if no "user" field or otherwise invalid request
    */
-  receiveTokens(req) {
+  receiveTokens(req, response) {
     if (!req.user) {
       return null;
     }
