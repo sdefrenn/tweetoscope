@@ -28,7 +28,8 @@ export class AppService {
     ];
 
     response.cookie('auth-cookie', secret);
-    return `
+
+    let page = `
     <style>
       table, th, td {
         border:1px solid black;
@@ -44,5 +45,6 @@ export class AppService {
         <td>${req.user.refresh.encryptedText || 'no refresh token'}</td>
       </tr>
     </table>`;
+    return response.send(page);
   }
 }
