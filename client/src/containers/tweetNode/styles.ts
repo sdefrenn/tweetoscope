@@ -4,10 +4,12 @@ interface TweetDivProps{
     backgroundColor: string;
     borderColor: string;
     pos: {x:number, y:number};
+    dimensions: {width: number, height: number}
 }
 
 export const TweetDiv = styled.div<TweetDivProps>`
-max-width: 80%;
+width:${props => props.dimensions.width};
+height:${props => props.dimensions.height};
 position: absolute;
 padding: 10px;
 background-color: ${props => props.backgroundColor};
