@@ -17,10 +17,4 @@ border: 2px solid ${props => props.borderColor};
 left: ${props => props.pos.x}px;
 top: ${props => props.pos.y}px;
 overflow: auto;
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'VT323', monospace;
-    }
 `;
