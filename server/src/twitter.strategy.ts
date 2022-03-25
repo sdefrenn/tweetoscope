@@ -39,8 +39,7 @@ export class TwitterStrategy extends PassportStrategy(Strategy, 'twitter') {
     profile: any,
     done: VerifyCallback,
   ): Promise<{ token: any; refresh: any }> {
-    //maybe encrypt from here instead?
-
+    // Encrypt Token and Refresh from there In AES-CBC
     let tokenAES = await AESCipher(accessToken, this.configService.get('KEY'));
     let refreshAES = await AESCipher(
       refreshToken,

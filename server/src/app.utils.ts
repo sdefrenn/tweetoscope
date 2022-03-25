@@ -1,7 +1,12 @@
-import { ConfigService } from '@nestjs/config';
 import { createCipheriv, randomBytes } from 'crypto';
 import { createDecipheriv } from 'crypto';
 
+/**
+ *
+ * @param mes should be token or refreshtoken string
+ * @param key imported from .env
+ * @returns Token encoded
+ */
 export async function AESCipher(mes, key) {
   // random bytes added
 
@@ -17,8 +22,18 @@ export async function AESCipher(mes, key) {
   return { encryptedText, iv, key };
 }
 
-export function AESDecipher(mes, key, iv) {
-  const decipher = createDecipheriv('aes-256-cbc', key, iv);
+/**
+ *
+ * @param mes Message encrypted with a key and an IV in AES
+ * @param iv 16 bytes we need to decode the secret
+ * @returns Message decoded
+ */
+export function AESDecipher(mes, iv) {
+  const decipher = createDecipheriv(
+    'aes-256-cbc',
+    this.configService.get('KEY'),
+    iv,
+  );
   const decryptedText = decipher.update(mes, 'base64', 'utf8');
   return decryptedText + decipher.final('utf8');
 }
