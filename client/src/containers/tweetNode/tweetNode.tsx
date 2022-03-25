@@ -5,7 +5,7 @@ function TweetNode({ data, nameColor, textColor, backgroundColor, borderColor}:
     {data: DisplayTweet, color?: string, nameColor?: string, textColor?: string, backgroundColor?: string, borderColor?: string}) {
 
   return(
-    <TweetDiv backgroundColor={backgroundColor!} borderColor={borderColor!} pos={data.position} dimensions={data.dimension}>
+    <TweetDiv backgroundColor={backgroundColor!} borderColor={borderColor!} pos={data.position} dimensions={data.dimensions}>
       <p style={{ color: nameColor }}>{data.name} @{data.username} - {data.stringDate}</p>
       <br/>
       <p style={{ color: textColor }}>{data.text}</p>

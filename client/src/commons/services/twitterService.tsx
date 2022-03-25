@@ -10,7 +10,7 @@ class TwitterService{
     let temp_tweet = new Tweet("1", "Mary Sue", "themarysue", new Date(2022, 3, 3, 14, 52), "Hello Twitter, this is my first Tweet! So happy to share this moment with you! #noob #firsttweet");
 
     let temp_res = [
-        new Tweet("2", "Bob Hank", "hankbob123", new Date(2022, 3, 3, 14, 58), "Hey Mary, great to have you on Twitter. Can't wait to start debating on interesting topics with you!", temp_tweet),
+        new Tweet("2", "Bob Hank", "hankbob123", new Date(2022, 3, 3, 14, 58), "Hey Mary, great to have you on Twitter. Can't wait to start debating on interesting topics with you! This is a test to see if my text will be scrolled in my div, so do not take it in consideration. I will write a lot of text just to see the result.", temp_tweet),
         new Tweet("3", "Justine Dupont", "dptju2000", new Date(2022, 3, 4, 10, 15), "Omg Mary hi!!! Great new member for Twitter!", temp_tweet),
         new Tweet("4","Robotott", "robyy", new Date(2022, 3, 3, 15, 9), "Hello Mary Sue!", temp_tweet)
     ];

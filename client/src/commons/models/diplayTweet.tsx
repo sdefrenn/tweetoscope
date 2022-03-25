@@ -3,7 +3,7 @@ import Tweet from "./tweet";
 class DisplayTweet extends Tweet{
 
     position: {x: number, y: number};
-    dimension: {width: number, height: number};
+    dimensions: {width: number, height: number};
 
     private _displayChildren: DisplayTweet[];
     private _displayParent: DisplayTweet|null;
@@ -12,7 +12,7 @@ class DisplayTweet extends Tweet{
         super(tweet.id, tweet.name, tweet.username, tweet.date, tweet.text, tweet.parent, tweet.replies);
 
         this.position = position;
-        this.dimension = {width: 400, height: 100};
+        this.dimensions = {width: 400, height: 100};
 
         this._displayParent = displayParent?displayParent:null;
         this._displayChildren = displayChildren?displayChildren:[];
