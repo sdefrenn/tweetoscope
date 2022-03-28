@@ -1,9 +1,10 @@
 import DisplayTweet from "../../commons/models/diplayTweet";
 
-const Curve = 20;
+//const Curve = 10;
 
 function TweetArc({rootTweet, childTweet}: {rootTweet: DisplayTweet, childTweet: DisplayTweet}) {
-    return connectClean(rootTweet.position.x + rootTweet.dimension.width / 2, rootTweet.position.y, childTweet.position.x + childTweet.dimension.width / 2, childTweet.position.y, Curve);
+    let Curve = (-(rootTweet.position.y + rootTweet.dimension.height+10) + childTweet.position.y)/3
+    return connectClean(rootTweet.position.x + rootTweet.dimension.width / 2, rootTweet.position.y + rootTweet.dimension.height+10, childTweet.position.x + childTweet.dimension.width / 2, childTweet.position.y, Curve);
 }
 
 function connectBezier(x1:number,y1:number,x2:number,y2:number, offset:number){
