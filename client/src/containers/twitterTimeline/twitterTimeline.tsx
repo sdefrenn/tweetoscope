@@ -21,7 +21,7 @@ function TwitterTimeline({someProperty}: {someProperty: string}) {
 
     //no need to update callback, can just use "prev" from setState method
     const handleScroll = useCallback((event: WheelEvent) => {
-      setOffset(prev => Math.min(prev+event.deltaY, 0));
+      setOffset(prev => Math.min(prev-event.deltaY, 0));
     }, [])
 
     useEffect(() => {
