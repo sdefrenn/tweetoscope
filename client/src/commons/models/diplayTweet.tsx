@@ -18,8 +18,15 @@ class DisplayTweet extends Tweet{
         this._displayChildren = displayChildren?displayChildren:[];
     }
 
+    addDisplayChild(child: DisplayTweet){
+        this._displayChildren.push(child);
+    }
     get displayChildren(){
         return this._displayChildren;
+    }
+
+    setDisplayParent(parent: DisplayTweet){
+        this._displayParent = parent;
     }
 
     get displayParent(){
