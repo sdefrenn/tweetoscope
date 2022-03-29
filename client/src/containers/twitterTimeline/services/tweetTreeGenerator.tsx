@@ -3,10 +3,12 @@ import Tweet from "../../../commons/models/tweet";
 
 const TreeSpacing = 15;
 const Dimensions = {width: 500, height: 400}
-const NodeSpacingX = 10;
+const NodeSpacingX = 100;
 const NodeSpacingY = 300;
 
 const TopSpacing = 100;
+
+const UnhiddenDefault = 2;
 
 function genTrees(rootTweets: Tweet[]): DisplayTweet[][]{
 
@@ -15,9 +17,9 @@ function genTrees(rootTweets: Tweet[]): DisplayTweet[][]{
 
   let treeOffset = () => prevTreeStartX + prevTreeWidth + TreeSpacing;
   let ret: DisplayTweet[][] = [];
-  for(const tweet of rootTweets.map(displayTweetify)){
+  for(const tweet of rootTweets.map(t => displayTweetify(t,1))){
     let arr: DisplayTweet[] = []
-    let res = layout(tweet, treeOffset(), TopSpacing, arr);
+    let res = layout(tweet, treeOffset() + NodeSpacingX, TopSpacing, arr);
     prevTreeStartX = res.startX;
     prevTreeWidth = res.width;
     ret.push(arr);
@@ -40,6 +42,9 @@ function layout(tweet: DisplayTweet, offset: number, depth: number, outputArray:
   let displayChildren = [];
   //go to the bottom and progressively move the offset
   for(const child of tweet.displayChildren){
+    if(child.isHidden){
+      continue;
+    }
     let res = layout(child, lastOffset, depth+NodeSpacingY, outputArray);
     displayChildren.push(res.tweet);
     lastOffset = res.startX+res.width+NodeSpacingX;
@@ -51,8 +56,17 @@ function layout(tweet: DisplayTweet, offset: number, depth: number, outputArray:
     return {tweet:tweet, startX: offset, width: Dimensions.width}
   }
 
+  let width = 0;
   //otherwise place in the middle of the children
-  tweet.position = {x:(lastOffset+offset)/2-Dimensions.width/2,y:depth};
+  if(tweet.displayChildren.filter(dTweet => !dTweet.isHidden).length>0){
+    tweet.position = {x:(lastOffset+offset)/2-Dimensions.width/2,y:depth};
+    width = lastOffset-offset;
+  }
+  else{
+    tweet.position = {x:lastOffset, y: depth};
+    width = tweet.dimension.width;
+  }
+
   tweet.subtreeSpan.startX = offset;
   tweet.subtreeSpan.endX = lastOffset;
 
@@ -60,22 +74,26 @@ function layout(tweet: DisplayTweet, offset: number, depth: number, outputArray:
 
 
 
-  return {tweet: tweet, startX: offset, width: lastOffset-offset}
+  return {tweet: tweet, startX: offset, width: width}
 }
 /**
  * turn a tweet tree into a displayTweet tree
  * preserving links (replies -> displayChildren)
  */
-function displayTweetify(tweet: Tweet): DisplayTweet{
+function displayTweetify(tweet: Tweet, depth:number): DisplayTweet{
   let baseDT = new DisplayTweet(tweet, {x:0, y:0});
   if(tweet.replies.length==0){
     return baseDT;
   }
 
   for(const child of tweet.replies){
-    let dChild = displayTweetify(child);
+    let dChild = displayTweetify(child,depth+1);
     dChild.setDisplayParent(baseDT);
-    baseDT.addDisplayChild(dChild); 
+    baseDT.addDisplayChild(dChild);
+
+    if(depth>=UnhiddenDefault){
+      dChild.setHidden(true);
+    }
   }
   
   return baseDT;
