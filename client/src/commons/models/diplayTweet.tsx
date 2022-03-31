@@ -43,12 +43,33 @@ class DisplayTweet{
         return this._displayParent;
     }
 
+    get displayRoot(): DisplayTweet{
+        if(this.displayParent){
+            return this.displayParent.displayRoot;
+        }
+        return this;
+    }
+
+    /*setHiddenRec(state: boolean){
+        //TODO assert parent not hidden?
+        this._hidden = state;
+        for(const child of this._displayChildren){
+            child.setHiddenRec(state);
+        }
+    }*/
+
     setHidden(state: boolean){
         this._hidden = state;
     }
 
     get isHidden(){
         return this._hidden;
+    }
+
+
+    resetPosition(){
+        this.position = {x:0, y:0};
+        this.subtreeSpan = {startX: this.position.x, endX: this.position.x+this.dimension.width};
     }
 
 
