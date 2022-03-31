@@ -31,12 +31,15 @@ function TwitterTimeline({someProperty}: {someProperty: string}) {
 
 
 
-    function updateDisplay(){
+    function updateDisplay(offsetChange?: number){
       //just modifying the IDs
       //TODO: actually make 2 distinct arrays?
       setRenderedTweets(
         regenTrees(renderedTweets.map(arr => Array.from(arr)))
       )
+      if(offsetChange){
+        setOffset(prev => Math.min(prev+offsetChange,0))
+      }
     }
 
 
