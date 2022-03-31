@@ -4,7 +4,7 @@ import { TweetDiv } from "./styles";
 function TweetNode(props:TweetNodeProps) {
 
   return(
-    <TweetDiv backgroundColor={props.backgroundColor!} borderColor={props.borderColor!} pos={props.data.position} dimensions={props.data.dimension}>
+    <TweetDiv onClick={props.onClick} backgroundColor={props.backgroundColor!} borderColor={props.borderColor!} pos={props.data.position} dimensions={props.data.dimension}>
       <p style={{ color: props.nameColor }}>{props.data.name} @{props.data.username} - {props.data.stringDate}</p>
       <br/>
       <p style={{ color: props.textColor }}>{props.data.text}</p>

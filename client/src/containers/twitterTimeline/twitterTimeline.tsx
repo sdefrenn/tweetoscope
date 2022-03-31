@@ -3,7 +3,7 @@ import Tweet from "../../commons/models/tweet";
 import TwitterService from "../../commons/services/twitterService";
 import TweetArc from "../../components/tweetArc/tweetArc";
 import TweetTree from "../tweetTree/tweetTree";
-import genTrees from "./services/tweetTreeGenerator";
+import {regenTrees, genTrees} from "./services/tweetTreeGenerator";
 import {Container, SVGContainer} from "./styles";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
@@ -30,8 +30,25 @@ function TwitterTimeline({someProperty}: {someProperty: string}) {
 
 
 
+
+    function updateDisplay(){
+      //just modifying the IDs
+      //TODO: actually make 2 distinct arrays?
+      setRenderedTweets(
+        regenTrees(renderedTweets.map(arr => Array.from(arr)))
+      )
+    }
+
+
+
+
+
     //assumes getTimeline returns a different object when timeline is updated
     const [timeline, setTimeline] = useState(twitter.getTimeline());
+
+
+    //would filter to only a few tweets that can actually be displayed
+    const [renderedTweets, setRenderedTweets] = useState(genTrees(timeline));
 
 
     //assume getTimeline is "free" and can be called multiple times
@@ -39,7 +56,7 @@ function TwitterTimeline({someProperty}: {someProperty: string}) {
           <Container ref={containerRef} offset={offset}>
             <span>{offset}</span>
             <SVGContainer>
-              {genTrees(timeline).flat().map(dTweet => {
+              {renderedTweets.flat().map(dTweet => {
                 if(dTweet.displayParent!=null){
                   return <TweetArc rootTweet={dTweet.displayParent} childTweet={dTweet}></TweetArc>
                 }
@@ -47,7 +64,7 @@ function TwitterTimeline({someProperty}: {someProperty: string}) {
               })
               }
             </SVGContainer>
-            {genTrees(timeline).map(tweetList => <TweetTree key={tweetList[0]!.id} tweets={tweetList}></TweetTree>)}
+            {renderedTweets.map(tweetList => <TweetTree displayUpdateHandler={updateDisplay} key={tweetList[0]!.id} tweets={tweetList}></TweetTree>)}
           </Container>);
 }
 

@@ -8,16 +8,29 @@ const NodeSpacingY = 300;
 
 const TopSpacing = 100;
 
-const UnhiddenDefault = 2;
+const UnhiddenDefault = 4;
 
-function genTrees(rootTweets: Tweet[]): DisplayTweet[][]{
+/**
+ * Creates a list of displaytweets for each root tweet tree
+ * @param rootTweets list of root tweets to display on the timeline
+ * @returns a list of the display tweets for each root tweet tree
+ */
+export function genTrees(rootTweets: Tweet[]): DisplayTweet[][]{ 
+  return layoutTrees(rootTweets.map(t => displayTweetify(t,1)));
+}
 
+export function regenTrees(tweetArrays: DisplayTweet[][]): DisplayTweet[][]{
+  return layoutTrees(tweetArrays.map(arr => arr[0].displayRoot));
+}
+
+function layoutTrees(rootTweets: DisplayTweet[]): DisplayTweet[][]{
   let prevTreeStartX = 0;
   let prevTreeWidth = 0;
 
   let treeOffset = () => prevTreeStartX + prevTreeWidth + TreeSpacing;
   let ret: DisplayTweet[][] = [];
-  for(const tweet of rootTweets.map(t => displayTweetify(t,1))){
+  for(const tweet of rootTweets){
+    //TODO assert root (not sure if possible outside testing framework)
     let arr: DisplayTweet[] = []
     let res = layout(tweet, treeOffset() + NodeSpacingX, TopSpacing, arr);
     prevTreeStartX = res.startX;
@@ -27,6 +40,7 @@ function genTrees(rootTweets: Tweet[]): DisplayTweet[][]{
 
   return ret;
 }
+
 /**
  * 
  * @param tweet the tweet being handled (pass in root tweet)
@@ -36,6 +50,7 @@ function genTrees(rootTweets: Tweet[]): DisplayTweet[][]{
  * @returns the start and end around (sub)tree, and the root DisplayTweet
  */
 function layout(tweet: DisplayTweet, offset: number, depth: number, outputArray: DisplayTweet[]): {tweet: DisplayTweet, startX: number, width: number} {
+
 
   let lastOffset = offset;
 
@@ -99,4 +114,4 @@ function displayTweetify(tweet: Tweet, depth:number): DisplayTweet{
   return baseDT;
 }
 
-export default genTrees;
+
