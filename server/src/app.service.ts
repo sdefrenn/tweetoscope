@@ -47,4 +47,19 @@ export class AppService {
     </table>`;
     return response.send(page);
   }
+
+  /**
+   * should open editor window
+   */
+  writeTweet() {
+    return 'yo';
+  }
+
+  /**
+   * should send basic page i guess?
+   * @returns
+   */
+  homePage() {
+    return 'I Believe HERE IS THE WAY TO EVERYTHING';
+  }
 }
