@@ -1,17 +1,26 @@
 import DisplayTweet from "../../commons/models/diplayTweet";
 import { TweetDiv } from "./styles";
 
-function TweetNode({ data, nameColor, textColor, backgroundColor, borderColor}:
-    {data: DisplayTweet, color?: string, nameColor?: string, textColor?: string, backgroundColor?: string, borderColor?: string}) {
+function TweetNode(props:TweetNodeProps) {
 
   return(
-    <TweetDiv backgroundColor={backgroundColor!} borderColor={borderColor!} pos={data.position} dimensions={data.dimension}>
-      <p style={{ color: nameColor }}>{data.name} @{data.username} - {data.stringDate}</p>
+    <TweetDiv onClick={props.onClick} backgroundColor={props.backgroundColor!} borderColor={props.borderColor!} pos={props.data.position} dimensions={props.data.dimension}>
+      <p style={{ color: props.nameColor }}>{props.data.name} @{props.data.username} - {props.data.stringDate}</p>
       <br/>
-      <p style={{ color: textColor }}>{data.text}</p>
+      <p style={{ color: props.textColor }}>{props.data.text}</p>
     </TweetDiv>
   );
 }
+
+export interface TweetNodeProps extends React.HTMLAttributes<HTMLDivElement>{
+  data: DisplayTweet, 
+  color?: string, 
+  nameColor?: string, 
+  textColor?: string, 
+  backgroundColor?: string, 
+  borderColor?: string
+}
+
 
 TweetNode.defaultProps = {
   nameColor: "#6175ff",

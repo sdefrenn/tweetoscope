@@ -1,12 +1,14 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
-export const Container = styled.div`
+export const Container = styled.div<{offset: number}>`
 position: relative;
 border: 1px solid blue;
 width: 80vw;
 height: 90vh;
 overflow: hidden;
+> div {transform: translateX(${props => props.offset}px);}
+path {transform: translateX(${props => props.offset}px);}
 `;
 
 export const SVGContainer = styled.svg`

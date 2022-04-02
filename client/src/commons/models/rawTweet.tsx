@@ -73,6 +73,10 @@ class RawTweet{
     get id(): string{
         return this._id;
     }
+
+    isRoot(): boolean{
+        return this._parent === null;
+    }
 }
 
 export default RawTweet;
