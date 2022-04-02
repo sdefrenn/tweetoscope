@@ -1,52 +1,52 @@
-import needle from 'needle'
+import axios, { AxiosResponse } from 'axios'
 
-const bearerToken = "AAAAAAAAAAAAAAAAAAAAAKtGYQEAAAAAmetRHjeuMQcnpSorGI3FC1FJyzQ%3DsqjdVQKAgxAm6hW1HcupoPDbgn6ISkYFSfBPeJntGsBEi1h0LJ";
+const serverURL = "http://localhost:4000";
 
 function getTweet(id: string){
 
-    const endpointURL = "https://api.twitter.com/2/tweets?ids=";
+  var res: AxiosResponse<any, any>;
 
-    async function getRequest() {
+  var body = {
+    id : id,
+  };
 
-        // These are the parameters for the API request
-        // specify Tweet IDs to fetch, and any additional fields that are required
-        // by default, only the Tweet ID and text are returned
-        const params = {
-            "ids": id, // Edit Tweet IDs to look up
-            "tweet.fields": "lang,author_id", // Edit optional query parameters here
-            "user.fields": "created_at" // Edit optional query parameters here
-        }
+  async function getRequest() {
 
-        // this is the HTTP header that adds bearer token authentication
-        const res = await needle('get', endpointURL, params, {
-            headers: {
-                "User-Agent": "v2TweetLookupJS",
-                "authorization": `Bearer ${bearerToken}`
-            }
-        })
+    await axios
 
-        if (res.body) {
-            return res.body;
-        } else {
-            throw new Error('Unsuccessful request');
-        }
+      .post(serverURL+'/twitter/getTweet', body)
+
+      .then(function (response) {
+        console.log("Request Answer")
+        console.log(response);
+        res = response.data;
+      })
+
+      .catch(function (error: any) {
+        console.log(error);
+      });
+
+      if (res) {
+          return res;
+      } else {
+          throw new Error('Unsuccessful request');
+      }
     }
 
-    (async () => {
+  (async () => {
 
-        try {
-            // Make request
-            const response = await getRequest();
-            console.dir(response, {
-                depth: null
-            });
+      try {
+          const response = await getRequest();
+          console.log("Client Request");
+          console.dir(response, {
+              depth: null
+          });
+          console.log("Client Request End");
 
-        } catch (e) {
-            console.log(e);
-            process.exit(-1);
-        }
-        process.exit();
-    })();
+      } catch (e) {
+          console.log(e);
+      }
+  })();
 
 }
 

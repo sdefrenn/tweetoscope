@@ -1,24 +1,53 @@
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 
-const serverURL = "";
+const serverURL = "http://localhost:4000";
 
 function getUserTimeline(id: string){
-    var body = {
-        id : id,
-    };
-    
-    var res;
 
-    axios.post(serverURL+'/twitter/userTimeline', body)
+  var res: AxiosResponse<any, any>;
+
+  var body = {
+    id : id,
+  };
+
+  async function getRequest() {
+
+    await axios
+
+      .post(serverURL+'/twitter/userTimeline', body)
+
       .then(function (response) {
+        console.log("Request Answer")
         console.log(response);
-        res = response;
+        res = response.data;
       })
+
       .catch(function (error: any) {
         console.log(error);
       });
 
-    return res;
+      if (res) {
+          return res;
+      } else {
+          throw new Error('Unsuccessful request');
+      }
+    }
+
+  (async () => {
+
+      try {
+          const response = await getRequest();
+          console.log("Client Request");
+          console.dir(response, {
+              depth: null
+          });
+          console.log("Client Request End");
+
+      } catch (e) {
+          console.log(e);
+      }
+  })();
+
 }
 
 export default getUserTimeline;

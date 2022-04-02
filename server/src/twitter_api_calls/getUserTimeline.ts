@@ -1,7 +1,7 @@
 // Get User Tweet timeline by user ID
 // https://developer.twitter.com/en/docs/twitter-api/tweets/timelines/quick-start
 
-import needle from 'needle';
+import axios, { AxiosResponse } from 'axios';
 
 // this is the ID for @TwitterDev
 
@@ -18,8 +18,56 @@ function getUserTimeline(id: string){
     const userId = id;
     const url = `https://api.twitter.com/2/users/${userId}/tweets`;
 
+    const getPage = async (params, options, nextToken) => {
+        if (nextToken) {
+            params.pagination_token = nextToken;
+        }
+
+        try {
+            /*const resp = await needle('get', url, params, options);
+
+            if (resp.statusCode != 200) {
+                console.log(`${resp.statusCode} ${resp.statusMessage}:\n${resp.body}`);
+                return;
+            }
+            return resp.body;*/
+            
+            var res: AxiosResponse<any, any>;
+            
+            await axios
+        
+            .get(url, {headers : {
+                "User-Agent": "v2TweetLookupJS",
+                "authorization": `Bearer ${bearerToken}`}
+            })
+            
+            .then(function (response) {
+                res = response;
+                console.log("Server Request");
+                console.dir(res, {
+                    depth: null
+                });
+                console.log("Server Request End");
+            })
+
+            .catch(function (error: any) {
+                console.log(error);
+            });
+
+            if (res.data) {
+                return res;
+            } else {
+                throw new Error('Unsuccessful request');
+            }
+
+
+            } catch (err) {
+                throw new Error(`Request failed: ${err}`);
+            }
+    }
+    
     const getUserTweets = async () => {
-        let userTweets = [];
+        var userTweets = [];
 
         // we request the author_id expansion so that we can print out the user name later
         let params = {
@@ -42,13 +90,16 @@ function getUserTimeline(id: string){
 
         while (hasNextPage) {
             let resp = await getPage(params, options, nextToken);
-            if (resp && resp.meta && resp.meta.result_count && resp.meta.result_count > 0) {
-                userName = resp.includes.users[0].username;
-                if (resp.data) {
-                    userTweets.push.apply(userTweets, resp.data);
+            console.log("Data Parsing Start");
+            console.log(resp.data.data);
+            console.log("Data Parsing End");
+            if (resp && resp.data.data && resp.data.meta.result_count && resp.data.meta.result_count > 0) {
+                //userName = resp.includes.users[0].username;
+                if (resp.data.data) {
+                    userTweets.push.apply(userTweets, resp.data.data);
                 }
-                if (resp.meta.next_token) {
-                    nextToken = resp.meta.next_token;
+                if (resp.data.meta.nextToken) {
+                    nextToken = resp.data.meta.nextToken;
                 } else {
                     hasNextPage = false;
                 }
@@ -64,24 +115,6 @@ function getUserTimeline(id: string){
 
     }
 
-    const getPage = async (params, options, nextToken) => {
-        if (nextToken) {
-            params.pagination_token = nextToken;
-        }
-
-        try {
-            const resp = await needle('get', url, params, options);
-
-            if (resp.statusCode != 200) {
-                console.log(`${resp.statusCode} ${resp.statusMessage}:\n${resp.body}`);
-                return;
-            }
-            return resp.body;
-        } catch (err) {
-            throw new Error(`Request failed: ${err}`);
-        }
-    }
-    
     getUserTweets();
 
 }
