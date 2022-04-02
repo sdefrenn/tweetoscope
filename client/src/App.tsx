@@ -14,7 +14,7 @@ import getUserTimeline from "./apiRequests/getUserTimeline";
 function App() {
   return (
     <div className="App">
-      <button onClick={() => getUserTimeline("2244994945")}>Test1</button>
+      <button onClick={() => getUserTimeline("2244994945", "7140dibdnow9c7btw420jnqp01o48wwk2j1wh0303jvhy")}>Test1</button>
       <button onClick={() => getTweet("1261326399320715264")}>Test2</button>
     </div>
   );

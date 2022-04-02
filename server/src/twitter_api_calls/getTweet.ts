@@ -29,6 +29,9 @@ async function getTweet(id: string){
 
         var res: AxiosResponse<any, any>;
 
+        const url = endpointURL + id + params;
+        console.log("Request URL: " + url);
+
         await axios
         
         .get(endpointURL + id + params, {headers : {

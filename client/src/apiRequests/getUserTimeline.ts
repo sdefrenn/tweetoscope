@@ -2,12 +2,13 @@ import axios, { AxiosResponse } from 'axios'
 
 const serverURL = "http://localhost:4000";
 
-function getUserTimeline(id: string){
+function getUserTimeline(id: string, p_token: string = ""){
 
   var res: AxiosResponse<any, any>;
 
   var body = {
     id : id,
+    p_token : p_token,
   };
 
   async function getRequest() {

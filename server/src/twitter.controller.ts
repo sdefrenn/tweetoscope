@@ -44,7 +44,7 @@ export class TwitterController {
   async searchUserTimeline(@Req() req: Request): Promise<any> {
 
     try {
-          const response = await getUserTimeline(req.body.id);
+          const response = await getUserTimeline(req.body.id, req.body.p_token);
 
           console.log("Route Request");
           console.dir(response, {
