@@ -14,6 +14,9 @@ export class AppController {
    */
   @Get()
   @UseGuards(AuthGuard('twitter'))
+  getHello(): string {
+    return 'Hello World!';
+  }
 
   /**
    * redirect from twitter with token if Login did not failed
