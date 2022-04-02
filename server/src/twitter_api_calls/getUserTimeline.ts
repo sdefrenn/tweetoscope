@@ -18,10 +18,7 @@ function getUserTimeline(id: string){
     const userId = id;
     const url = `https://api.twitter.com/2/users/${userId}/tweets`;
 
-    const getPage = async (params, options, nextToken) => {
-        if (nextToken) {
-            params.pagination_token = nextToken;
-        }
+    const getPage = async (nextToken: string) => {
 
         try {
             /*const resp = await needle('get', url, params, options);
@@ -32,11 +29,21 @@ function getUserTimeline(id: string){
             }
             return resp.body;*/
             
+            var params: string = "?";
+            params += "tweet.fields=lang,author_id";
+            params += "&"
+            params += "user.fields=created_at";
+            if (nextToken) {
+                params += "&pagination_token="+nextToken;
+            }
+
+            console.log(url+params);
+
             var res: AxiosResponse<any, any>;
             
             await axios
         
-            .get(url, {headers : {
+            .get(url+params, {headers : {
                 "User-Agent": "v2TweetLookupJS",
                 "authorization": `Bearer ${bearerToken}`}
             })
@@ -44,7 +51,10 @@ function getUserTimeline(id: string){
             .then(function (response) {
                 res = response;
                 console.log("Server Request");
-                console.dir(res, {
+                console.dir(res.data.data, {
+                    depth: null
+                });
+                console.dir(res.data.meta, {
                     depth: null
                 });
                 console.log("Server Request End");
@@ -61,53 +71,43 @@ function getUserTimeline(id: string){
             }
 
 
-            } catch (err) {
-                throw new Error(`Request failed: ${err}`);
-            }
+        } catch (err) {
+            throw new Error(`Request failed: ${err}`);
+        }
     }
     
     const getUserTweets = async () => {
         var userTweets = [];
 
         // we request the author_id expansion so that we can print out the user name later
-        let params = {
-            "max_results": 100,
-            "tweet.fields": "created_at",
-            "expansions": "author_id"
-        }
-
-        const options = {
-            headers: {
-                "User-Agent": "v2UserTweetsJS",
-                "authorization": `Bearer ${bearerToken}`
-            }
-        }
 
         let hasNextPage = true;
         let nextToken = null;
-        let userName;
+        let userName: string;
         console.log("Retrieving Tweets...");
 
         while (hasNextPage) {
-            let resp = await getPage(params, options, nextToken);
-            console.log("Data Parsing Start");
-            console.log(resp.data.data);
-            console.log("Data Parsing End");
-            if (resp && resp.data.data && resp.data.meta.result_count && resp.data.meta.result_count > 0) {
+            console.log("Try");
+            let resp = await getPage(nextToken);
+            var resp2 = resp.data;
+            if (resp2 && resp2.data && resp2.meta.result_count && resp2.meta.result_count > 0) {
                 //userName = resp.includes.users[0].username;
-                if (resp.data.data) {
-                    userTweets.push.apply(userTweets, resp.data.data);
+                if (resp2.data) {
+                    userTweets.push.apply(userTweets, resp2.data);
                 }
-                if (resp.data.meta.nextToken) {
-                    nextToken = resp.data.meta.nextToken;
+                console.log("nextToken: " + resp2.meta.next_token);
+                if (resp2.meta.next_token) {
+                    nextToken = resp2.meta.next_token;
                 } else {
                     hasNextPage = false;
                 }
             } else {
                 hasNextPage = false;
             }
+            console.log("hasNestPage: " + hasNextPage);
         }
 
+        console.log("Data Parsing Final: ");
         console.dir(userTweets, {
             depth: null
         });

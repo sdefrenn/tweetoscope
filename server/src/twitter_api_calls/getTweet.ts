@@ -20,20 +20,18 @@ async function getTweet(id: string){
         // These are the parameters for the API request
         // specify Tweet IDs to fetch, and any additional fields that are required
         // by default, only the Tweet ID and text are returned
-        const params = {
-            "tweet.fields": "lang,author_id", // Edit optional query parameters here
-            "user.fields": "created_at" // Edit optional query parameters here
-        }
         
-        var params2: string = "";
-        params2 += "&tweet.fields=lang,author_id";
-        params2 += "&user.fields=created_at";
+        
+        var params: string = "?";
+        params += "tweet.fields=lang,author_id";
+        params += "&"
+        params += "user.fields=created_at";
 
         var res: AxiosResponse<any, any>;
 
         await axios
         
-        .get(endpointURL + id, {headers : {
+        .get(endpointURL + id + params, {headers : {
             "User-Agent": "v2TweetLookupJS",
             "authorization": `Bearer ${bearerToken}`}
         })

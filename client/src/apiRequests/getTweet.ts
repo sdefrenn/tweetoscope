@@ -42,6 +42,7 @@ function getTweet(id: string){
               depth: null
           });
           console.log("Client Request End");
+          return response;
 
       } catch (e) {
           console.log(e);

@@ -2,7 +2,8 @@ import React from "react";
 import { Link, Outlet} from "react-router-dom";
 import logo from "./logo.svg";
 import TwitterTimeline from "./containers/twitterTimeline/twitterTimeline";
-import getTweet from "api_calls/getTweet";
+import getTweet from "./apiRequests/getTweet";
+import getUserTimeline from "./apiRequests/getUserTimeline";
 
 /**
  * Entry point for the app
@@ -13,10 +14,10 @@ import getTweet from "api_calls/getTweet";
 function App() {
   return (
     <div className="App">
-      <button onclick = {() => getTweet()}
+      <button onClick={() => getUserTimeline("2244994945")}>Test1</button>
+      <button onClick={() => getTweet("1261326399320715264")}>Test2</button>
     </div>
   );
 }
-import getTweet from "./api_calls/getTweet";
 
 export default App;
