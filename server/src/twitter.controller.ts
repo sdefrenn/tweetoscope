@@ -66,4 +66,6 @@ export class TwitterController {
 
   return routeRequest(fullURL);
 
+  }
+
 }
