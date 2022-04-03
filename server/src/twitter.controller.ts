@@ -53,4 +53,17 @@ export class TwitterController {
 
   }
 
+  @Post('mockup')
+  mockup(@Req() req: Request): Promise<any>{
+
+  const baseURL = `api route with some parameter ${req.body.something1} and ${req.body.something2}`;
+  var params: string = "?"; //Do not remove
+  params += "relevant parameter 1";
+  params += "&"; 
+  params += "relevant parameter 2"
+
+  const fullURL = baseURL+params;
+
+  return routeRequest(fullURL);
+
 }
