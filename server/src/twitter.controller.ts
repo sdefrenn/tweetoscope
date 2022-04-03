@@ -1,9 +1,7 @@
 import { Controller, Get, Post, Req } from '@nestjs/common';
 import { AppService } from './app.service';
 import { Request } from 'express';
-import getTweet from './twitter_api_calls/getTweet';
-import getUserTweets from './twitter_api_calls/getUserTimeline'
-import getUserTimeline from './twitter_api_calls/getUserTimeline';
+import routeRequest from './twitter_api_calls/twitter_api_call';
 
 @Controller('twitter')
 export class TwitterController {
@@ -20,44 +18,39 @@ export class TwitterController {
   }
 
   @Post('getTweet')
-  async searchTweet(@Req() req: Request): Promise<any> {
+  searchTweet(@Req() req: Request): Promise<any> {
 
-    try {
-          const response = await getTweet(req.body.id);
+    const baseURL = `https://api.twitter.com/2/tweets/${req.body.id}`;
 
-          console.log("Route Request");
-          console.dir(response, {
-              depth: null
-          });
-          console.log("Route Request End");
-          return response;
-          
+    var params: string = "?";
+    params += "tweet.fields=lang,author_id";
+    params += "&"
+    params += "user.fields=created_at";
 
-    } catch (e) {
-          console.log(e);
-          process.exit(-1);
-      }
+    const fullURL = baseURL+params;
+
+    return routeRequest(fullURL);
+
     }; 
     
 
   @Post('userTimeline')
-  async searchUserTimeline(@Req() req: Request): Promise<any> {
+  searchUserTimeline(@Req() req: Request): Promise<any> {
 
-    try {
-          const response = await getUserTimeline(req.body.id, req.body.p_token);
+    const baseURL = `https://api.twitter.com/2/users/${req.body.id}/tweets`;
 
-          console.log("Route Request");
-          console.dir(response, {
-              depth: null
-          });
-          console.log("Route Request End");
-          return response;
-          
+    var params: string = "?";
+    params += "tweet.fields=lang,author_id";
+    params += "&"
+    params += "user.fields=created_at";
+    if (req.body.p_token != "") {
+      params += `&pagination_token=${req.body.p_token}`;
+    }
 
-    } catch (e) {
-          console.log(e);
-          process.exit(-1);
-      }
-    }; 
+    const fullURL = baseURL+params;
+
+    return routeRequest(fullURL);
+
+  }
 
 }
