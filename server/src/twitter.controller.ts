@@ -17,15 +17,20 @@ export class TwitterController {
     return "Hello Twitter"
   }
 
+  /*
+  Get from the API 1 single Tweet
+  */
   @Post('getTweet')
   searchTweet(@Req() req: Request): Promise<any> {
 
     const baseURL = `https://api.twitter.com/2/tweets/${req.body.id}`;
 
     var params: string = "?";
-    params += "tweet.fields=lang,author_id";
-    params += "&"
-    params += "user.fields=created_at";
+    params += "tweet.fields=created_at,referenced_tweets,author_id,conversation_id";
+    params += "&";
+    params += "expansions=author_id,referenced_tweets.id";
+    params += "&";
+    params += "user.fields=name";
 
     const fullURL = baseURL+params;
 
@@ -33,23 +38,54 @@ export class TwitterController {
 
     }; 
     
-
+  /*
+  Get from the API 1 User Timeline
+  */
   @Post('userTimeline')
   searchUserTimeline(@Req() req: Request): Promise<any> {
 
     const baseURL = `https://api.twitter.com/2/users/${req.body.id}/tweets`;
 
     var params: string = "?";
-    params += "tweet.fields=lang,author_id";
-    params += "&"
-    params += "user.fields=created_at";
+    params += "tweet.fields=created_at,referenced_tweets,author_id,conversation_id";
+    params += "&";
+    params += "expansions=author_id,referenced_tweets.id";
+    params += "&";
+    params += "user.fields=name";
     if (req.body.p_token != "") {
-      params += `&pagination_token=${req.body.p_token}`;
+      params += "&";
+      params += `pagination_token=${req.body.p_token}`;
     }
 
     const fullURL = baseURL+params;
 
     return routeRequest(fullURL);
+
+  }
+
+  @Post('searchReplyTweets')
+  searchReplyTweets(@Req() req: Request): Promise<any>{
+
+  const baseURL = `https://api.twitter.com/2/tweets/search/recent`;
+  var params: string = "?"; //Do not remove
+  params += `query=conversation_id:${req.body.id}`;
+  params += "&";
+  params += "tweet.fields=created_at,referenced_tweets,author_id,conversation_id";
+  params += "&";
+  params += "expansions=author_id,referenced_tweets.id";
+  params += "&";
+  params += "user.fields=name";
+  if (req.body.p_token != "") {
+    params += "&";
+    params += `next_token=${req.body.p_token}`;
+  }
+
+  const fullURL = baseURL+params;
+
+  console.log("Full URL");
+  console.log(fullURL);
+
+  return routeRequest(fullURL);
 
   }
 

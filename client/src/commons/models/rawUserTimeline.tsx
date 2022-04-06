@@ -1,0 +1,16 @@
+import RawTimeline from "./rawTimeline";
+import getUserTimeline from "../../apiRequests/getUserTimeline";
+
+/**
+ * List of tweets generated from a UserTimeline
+ */
+
+class RawUserTimeline extends RawTimeline{
+
+    async nextPage(){
+        return await getUserTimeline(this.id,this.pagination_token);
+    }
+
+}
+
+export default RawUserTimeline;

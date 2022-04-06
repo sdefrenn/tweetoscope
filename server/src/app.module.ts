@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { TwitterStrategy } from './twitter.strategy';
 import { ConfigModule } from '@nestjs/config';
 import { TscpModule } from './tscp/tscp.module';
+import { TwitterController } from './twitter.controller';
 
 @Module({
   imports: [
@@ -12,7 +13,7 @@ import { TscpModule } from './tscp/tscp.module';
     }),
     TscpModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, TwitterController],
   providers: [AppService, TwitterStrategy],
 })
 export class AppModule {}

@@ -6,7 +6,7 @@ This module makes the call to the server of the application
 
 const serverURL = "http://localhost:4000";
 
-function serverRequest(route: string, body: any){
+function serverRequest(route: string, body: any): Promise<AxiosResponse> | undefined{
 
   var res: AxiosResponse<any, any>;
 
@@ -17,9 +17,7 @@ function serverRequest(route: string, body: any){
       .post(serverURL+route, body)
 
       .then(function (response) {
-        console.log("Request Answer")
-        console.log(response);
-        res = response.data;
+        res = response;
       })
 
       .catch(function (error: any) {
@@ -27,27 +25,21 @@ function serverRequest(route: string, body: any){
       });
 
       if (res) {
+          console.log("Final Result");
+          console.log(res);
           return res;
       } else {
           throw new Error('Unsuccessful request');
       }
     }
 
-  (async () => {
+  try {
+      const response = getRequest();
+      return response;
 
-      try {
-          const response = await getRequest();
-          console.log("Client Request");
-          console.dir(response, {
-              depth: null
-          });
-          console.log("Client Request End");
-          return response;
-
-      } catch (e) {
-          console.log(e);
-      }
-  })();
+  } catch (e) {
+      console.log(e);
+  };
 
 }
 
