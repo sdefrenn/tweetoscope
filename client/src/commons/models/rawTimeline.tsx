@@ -18,6 +18,10 @@ class RawTimeline {
         return this._timeline;
     }
 
+    set timeline(t: RawTweet[]){
+        this._timeline = t;
+    }
+
     get id(){
         return this._id;
     }

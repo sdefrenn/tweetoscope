@@ -15,6 +15,7 @@ export class AppController {
   @Get()
   @UseGuards(AuthGuard('twitter'))
   getHello(): string {
+    console.log("Start Token Reception");
     return 'Hello World!';
   }
 
@@ -22,9 +23,18 @@ export class AppController {
    * redirect from twitter with token if Login did not failed
    * req should contain token and refresh token
    */
+
   @Get('redirect')
   @UseGuards(AuthGuard('twitter'))
   sendTokenClient(@Req() req: Request, @Res() response: Response): string {
-    return this.appService.receiveTokens(req, response);
+    
+    console.log("Start Token Reception");
+
+    const tokens = this.appService.receiveTokens(req, response);
+    console.dir(tokens,{
+      depth: null
+    });
+    console.log("Token Received");
+    return tokens;
   }
 }

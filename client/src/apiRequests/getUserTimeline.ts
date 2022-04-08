@@ -7,7 +7,7 @@ import {tweetParse, userParse} from './requestHandling/dataParsing';
 This module get the id user's timeline
 */
 
-async function getUserTimeline(id: string, p_token: string = ""): Promise<RawUserTimeline>{
+async function getUserTimeline(id: string, p_token?: string): Promise<RawUserTimeline>{
 
   const route = "/twitter/UserTimeline"
 
