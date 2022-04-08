@@ -15,8 +15,8 @@ function TwitterLogger() {
     const [status, setStatus] = React.useState();
     const [url, setUrl] = React.useState();
 
-
     const login = () => {
+
         (async () => {
             
             try {
@@ -86,10 +86,11 @@ function TwitterLogger() {
         
         
         })();
+        
     },[]);
 
     return  <header className="App-header">
-                {!isLoggedIn &&
+                { !isLoggedIn &&
                 <img className='signin-btn' onClick={login} alt='Twitter login button' src='https://assets.klaudsol.com/twitter.png' />
                 }
                 

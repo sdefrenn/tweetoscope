@@ -14,7 +14,7 @@ class RawTweet{
     private _date: Date;
     private _text: string;
     private _replies: string = ""; 
-    private _parent: string;
+    private _parent: string = "";
     private _id: string;
 
     constructor(id: string, name: string, username: string, date: Date, text: string, parent?: string, replies?: string)  {

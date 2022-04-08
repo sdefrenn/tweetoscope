@@ -7,7 +7,7 @@ import {tweetParse, userParse} from './requestHandling/dataParsing';
 This module get the id user's timeline
 */
 
-async function getTweetReplies(id: string, p_token: string = ""): Promise<RawTweetReplies>{
+async function getTweetReplies(id: string, p_token?: string): Promise<RawTweetReplies>{
 
   const route = "/twitter/searchReplyTweets"
 
