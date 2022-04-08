@@ -52,7 +52,7 @@ export class TwitterController {
     params += "expansions=author_id,referenced_tweets.id";
     params += "&";
     params += "user.fields=name";
-    if (req.body.p_token != "") {
+    if (req.body.p_token && req.body.p_token != "") {
       params += "&";
       params += `pagination_token=${req.body.p_token}`;
     }
@@ -66,26 +66,26 @@ export class TwitterController {
   @Post('searchReplyTweets')
   searchReplyTweets(@Req() req: Request): Promise<any>{
 
-  const baseURL = `https://api.twitter.com/2/tweets/search/recent`;
-  var params: string = "?"; //Do not remove
-  params += `query=conversation_id:${req.body.id}`;
-  params += "&";
-  params += "tweet.fields=created_at,referenced_tweets,author_id,conversation_id";
-  params += "&";
-  params += "expansions=author_id,referenced_tweets.id";
-  params += "&";
-  params += "user.fields=name";
-  if (req.body.p_token != "") {
+    const baseURL = `https://api.twitter.com/2/tweets/search/recent`;
+    var params: string = "?"; //Do not remove
+    params += `query=conversation_id:${req.body.id}`;
     params += "&";
-    params += `next_token=${req.body.p_token}`;
-  }
+    params += "tweet.fields=created_at,referenced_tweets,author_id,conversation_id";
+    params += "&";
+    params += "expansions=author_id,referenced_tweets.id";
+    params += "&";
+    params += "user.fields=name";
+    if (req.body.p_token && req.body.p_token != "") {
+      params += "&";
+      params += `next_token=${req.body.p_token}`;
+    }
 
-  const fullURL = baseURL+params;
+    const fullURL = baseURL+params;
 
-  console.log("Full URL");
-  console.log(fullURL);
+    console.log("Full URL");
+    console.log(fullURL);
 
-  return routeRequest(fullURL);
+    return routeRequest(fullURL);
 
   }
 

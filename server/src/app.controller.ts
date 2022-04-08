@@ -2,6 +2,15 @@ import { Controller, Get, Req, Res, Response, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Request, response } from 'express';
 import { AppService } from './app.service';
+import * as fs from 'fs';
+
+import { Console } from "console";
+
+const myLogger = new Console({
+  stdout: fs.createWriteStream("normalStdout.txt"),
+  stderr: fs.createWriteStream("errStdErr.txt"),
+});
+
 
 @Controller('twitter')
 export class AppController {
@@ -31,10 +40,9 @@ export class AppController {
     console.log("Start Token Reception");
 
     const tokens = this.appService.receiveTokens(req, response);
-    console.dir(tokens,{
-      depth: null
-    });
+    //myLogger.log(tokens);
+    console.log(tokens.req.user);
     console.log("Token Received");
-    return tokens;
+    return tokens.req.user;
   }
 }
