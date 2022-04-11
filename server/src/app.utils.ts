@@ -31,7 +31,7 @@ export async function AESCipher(mes, key) {
 export function AESDecipher(mes, iv) {
   const decipher = createDecipheriv(
     'aes-256-cbc',
-    this.configService.get('KEY'),
+    process.env.KEY,
     iv,
   );
   const decryptedText = decipher.update(mes, 'base64', 'utf8');

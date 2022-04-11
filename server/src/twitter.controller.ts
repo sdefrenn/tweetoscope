@@ -2,6 +2,7 @@ import { Controller, Get, Post, Req } from '@nestjs/common';
 import { AppService } from './app.service';
 import { Request } from 'express';
 import routeRequest from './twitter_api_calls/twitter_api_call';
+import { AESDecipher } from './app.utils';
 
 @Controller('twitter')
 export class TwitterController {
@@ -25,6 +26,8 @@ export class TwitterController {
 
     const baseURL = `https://api.twitter.com/2/tweets/${req.body.id}`;
 
+    const auth_token = this.appService.decryptTokens(req);
+
     var params: string = "?";
     params += "tweet.fields=created_at,referenced_tweets,author_id,conversation_id";
     params += "&";
@@ -34,9 +37,9 @@ export class TwitterController {
 
     const fullURL = baseURL+params;
 
-    return routeRequest(fullURL);
+    return routeRequest(fullURL, auth_token);
 
-    }; 
+  }; 
     
   /*
   Get from the API 1 User Timeline
@@ -45,6 +48,8 @@ export class TwitterController {
   searchUserTimeline(@Req() req: Request): Promise<any> {
 
     const baseURL = `https://api.twitter.com/2/users/${req.body.id}/tweets`;
+
+    const auth_token = this.appService.decryptTokens(req);
 
     var params: string = "?";
     params += "tweet.fields=created_at,referenced_tweets,author_id,conversation_id";
@@ -59,7 +64,7 @@ export class TwitterController {
 
     const fullURL = baseURL+params;
 
-    return routeRequest(fullURL);
+    return routeRequest(fullURL, auth_token);
 
   }
 
@@ -67,6 +72,9 @@ export class TwitterController {
   searchReplyTweets(@Req() req: Request): Promise<any>{
 
     const baseURL = `https://api.twitter.com/2/tweets/search/recent`;
+
+    const auth_token = this.appService.decryptTokens(req);
+
     var params: string = "?"; //Do not remove
     params += `query=conversation_id:${req.body.id}`;
     params += "&";
@@ -85,22 +93,39 @@ export class TwitterController {
     console.log("Full URL");
     console.log(fullURL);
 
-    return routeRequest(fullURL);
+    return routeRequest(fullURL, auth_token);
+
+  }
+
+  @Post('currentUser')
+  currentUser(@Req() req: Request): Promise<any>{
+
+    const auth_token = this.appService.decryptTokens(req);
+
+    const baseURL = `https://api.twitter.com/2/users/me`;
+    var params: string = "?"; //Do not remove
+    params += "user.fields=profile_image_url,description,url";
+
+    const fullURL = baseURL+params;
+
+    return routeRequest(fullURL,auth_token);
 
   }
 
   @Post('mockup')
   mockup(@Req() req: Request): Promise<any>{
 
-  const baseURL = `api route with some parameter ${req.body.something1} and ${req.body.something2}`;
-  var params: string = "?"; //Do not remove
-  params += "relevant parameter 1";
-  params += "&"; 
-  params += "relevant parameter 2"
+    const auth_token = this.appService.decryptTokens(req);
 
-  const fullURL = baseURL+params;
+    const baseURL = `api route with some parameter ${req.body.something1} and ${req.body.something2}`;
+    var params: string = "?"; //Do not remove
+    params += "relevant parameter 1";
+    params += "&"; 
+    params += "relevant parameter 2"
 
-  return routeRequest(fullURL);
+    const fullURL = baseURL+params;
+
+    return routeRequest(fullURL);
 
   }
 

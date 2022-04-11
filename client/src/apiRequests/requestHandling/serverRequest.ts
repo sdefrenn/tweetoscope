@@ -4,7 +4,7 @@ import axios, { AxiosResponse } from 'axios'
 This module makes the call to the server of the application
 */
 
-const serverURL = "http://localhost:4000";
+const serverURL = "http://127.0.0.1:4000";
 
 function serverRequest(route: string, body: any): Promise<AxiosResponse> | undefined{
 

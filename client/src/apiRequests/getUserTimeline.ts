@@ -33,9 +33,6 @@ async function getUserTimeline(id: string, p_token?: string): Promise<RawUserTim
   }
 
   tweet_list.pagination_token = b.meta.next_token;
-
-  console.log("RawTimeline = ");
-  console.log(tweet_list);
   
   return tweet_list;
 

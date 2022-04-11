@@ -1,36 +1,28 @@
 import React from 'react'
 import axios, {AxiosResponse} from 'axios'
 import queryString from 'query-string'
+import { CookiesProvider, useCookies } from "react-cookie"
+import getSelf from '../apiRequests/getSelf'
 
 const base_url = 'http://127.0.0.1:4000'
 const request_token_route = `${base_url}/twitter` //Mettre ici la route du Request Token
-const logout_route = ''//Mettre ici la route de Logout
-const access_token_route = ''//Mettre ici la route de l'Access Token
-const profile_banner_route = ''//Mettre ici la route de la profile banner de l'utilisateur connecté
 
 function TwitterLogger() {
 
-    const [isLoggedIn, setIsLoggedIn] = React.useState<boolean>(false);
     const [name, setName] = React.useState<string>("");
+    const [username, setUserName] = React.useState<string>("");
     const [imageUrl, setImageUrl] = React.useState<string>("");
     const [status, setStatus] = React.useState<string>("");
     const [url, setUrl] = React.useState<string>("");
-    const [Cookie, setCookie] = React.useState<string>("");
+    const [cookies, setCookie, removeCookie] = useCookies();
 
     const login = () => {
 
         (async () => {
 
             try {
-                window.open(`${request_token_route}`);
-                const response2 = await axios.get(`${request_token_route}`);
-                console.log(response2);
-
-                //correctly both token
-
-                setCookie("example1");
                 
-                setIsLoggedIn(true);
+                window.open(`${request_token_route}`);
 
             } 
             
@@ -47,9 +39,7 @@ function TwitterLogger() {
 
         try {
 
-            axios.get(`${logout_route}`);
-            setCookie("");
-            setIsLoggedIn(false);
+            removeCookie('auth-cookie');
 
         } 
             
@@ -64,33 +54,20 @@ function TwitterLogger() {
     React.useEffect(() => {
         (async() => {
             
-            /*const {oauth_token, oauth_verifier} = queryString.parse(window.location.search);  
-            
-            if (oauth_token && oauth_verifier) {
-                try {
-                //Oauth Step 3
-                await axios({
-                    url: `${access_token_route}`,  
-                    method: 'POST',
-                    data: {oauth_token, oauth_verifier}
-                });
-                } catch (error) {
-                console.error(error); 
-                }
-            }*/
-            
             try {
 
                 //Authenticated Resource Access
-                const {data: {name, profile_image_url_https, status, entities}} = await axios({
-                url: `${profile_banner_route}`,
-                method: 'GET'
-                });
+                const data: any = await getSelf();
+
+                console.log("Data: ", data);
+
+                const user = data.data;
                 
-                setName(name);
-                setImageUrl(profile_image_url_https);
-                setStatus(status.text);
-                setUrl(entities.url.urls[0].expanded_url);
+                setName(user.name);
+                setUserName(user.username);
+                setImageUrl(user.profile_image_url);
+                setStatus(user.description);
+                setUrl(user.url);
 
             } 
                 
@@ -105,19 +82,21 @@ function TwitterLogger() {
     },[]);
 
     return  <header className="App-header">
-                { !isLoggedIn &&
-                <img className='signin-btn' onClick={login} alt='Twitter login button' src='https://assets.klaudsol.com/twitter.png' />
-                }
-                
-                { isLoggedIn &&
-                <div>
-                    <div><img alt='User profile' src={imageUrl}/></div> 
-                    <div>Name: {name}</div>
-                    <div>URL: {url}</div>
-                    <div>Status: {status}</div>
-                    <button className='signout-btn' onClick={logout}>Sign Out</button>
-                </div>
-                }
+                <CookiesProvider>
+                    { !cookies["auth-cookie"] &&
+                    <img className='signin-btn' onClick={login} alt='Twitter login button' src='https://assets.klaudsol.com/twitter.png' />
+                    }
+                    
+                    { cookies["auth-cookie"] &&
+                    <div>
+                        <div><img alt='User profile' src={imageUrl}/></div> 
+                        <div>Name: {name} ({username})</div>
+                        <div>URL: {url}</div>
+                        <div>Description: {status}</div>
+                        <button className='signout-btn' onClick={logout}>Sign Out</button>
+                    </div>
+                    }
+                </CookiesProvider>
             </header>;
 
 }
