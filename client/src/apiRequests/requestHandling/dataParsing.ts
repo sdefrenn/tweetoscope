@@ -6,7 +6,8 @@ type tweet_format = {
     id: string, 
     created_at: Date, 
     referenced_tweets: Array<any>,
-    text: string, };
+    text: string, 
+    public_metrics: Object};
 
 type user_data = [
     {id: string; 
@@ -37,6 +38,15 @@ function tweetParse(tweet_data: tweet_format, user_data: user_format): RawTweet{
 
     var origin = null;
 
+    /*constructor(id: string, 
+    name: string, 
+    username: string, 
+    date: Date, 
+    text: string, 
+    metrics: Object, 
+    parent?: string, 
+    replies?: string) */
+
     if (tweet_data.referenced_tweets){
         for (let i = 0; i < tweet_data.referenced_tweets.length; i++){
             if (tweet_data.referenced_tweets[i].type === 'replied_to'){
@@ -51,6 +61,7 @@ function tweetParse(tweet_data: tweet_format, user_data: user_format): RawTweet{
         user_data[tweet_data.author_id].username, 
         tweet_data.created_at, 
         tweet_data.text,
+        tweet_data.public_metrics,
         origin);
 
     return tweet;

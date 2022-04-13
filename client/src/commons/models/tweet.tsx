@@ -5,8 +5,8 @@ import RawTweet from "./rawTweet";
  */
 class Tweet extends RawTweet{
 
-    constructor(id: string, name: string, username: string, date: Date, text: string, parent?: string, replies?: string) {
-        super(id, name, username, date, text, parent, replies);
+    constructor(id: string, name: string, username: string, date: Date, text: string, metrics: Object, parent?: string, replies?: string) {
+        super(id, name, username, date, text, metrics, parent, replies);
     }
 
 }

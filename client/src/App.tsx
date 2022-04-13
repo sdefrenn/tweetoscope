@@ -9,6 +9,8 @@ import TwitterLogger from "./containers/twitterLogger";
 import getTweet from "./apiRequests/getTweet";
 import getUserTimeline from "./apiRequests/getUserTimeline";
 import getTweetReplies from "./apiRequests/getTweetReplies";
+import sendTweet from "./apiRequests/sendTweet";
+import sendBigTweet from "./apiRequests/sendBigTweet";
 
 /**
  * Entry point for the app
@@ -23,6 +25,8 @@ function App() {
       <button onClick={() => getUserTimeline("2244994945", "7140dibdnow9c7btw420jnqp01o48wwk2j1wh0303jvhy")}>Test1</button>
       <button onClick={() => getTweet("1511201517432360965")}>Test2</button>
       <button onClick={() => getTweetReplies("1511143607385874434", "b26v89c19zqg8o3fpytlg0pvzdaktnakfqpk8q35estx9")}>Test3</button>
+      <button onClick={() => sendTweet("Test ABCD")}>Test4</button>
+      <button onClick={() => sendBigTweet("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaTest ABCD")}>Test5</button>
     </div></>
     /*<BaseContainer>
       <NavContainer>

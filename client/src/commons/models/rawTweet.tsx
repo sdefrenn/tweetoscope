@@ -1,7 +1,6 @@
 import getTweet from "../../apiRequests/getTweet";
 import getTweetReplies from "../../apiRequests/getTweetReplies";
 import { dateToString } from "../utils/dateFormater";
-import RawTimeline from "./rawTimeline";
 import RawTweetReplies from "./rawTweetReplies";
 
 /**
@@ -16,14 +15,16 @@ class RawTweet{
     private _replies: string = ""; 
     private _parent: string = "";
     private _id: string;
+    private _metrics: Object;
 
-    constructor(id: string, name: string, username: string, date: Date, text: string, parent?: string, replies?: string)  {
+    constructor(id: string, name: string, username: string, date: Date, text: string, metrics: Object, parent?: string, replies?: string)  {
         
         this._id=id;
         this._name = name;
         this._username = username;
         this._date = date;
         this._text = text;
+        this._metrics = metrics;
 
         if(!replies){
             this._replies = "";
@@ -40,7 +41,7 @@ class RawTweet{
     }
 
     clone(): RawTweet{
-        return new RawTweet(this.id, this.name, this.username, this.date, this.text, this.parent);
+        return new RawTweet(this.id, this.name, this.username, this.date, this.text, this.metrics, this.parent, this.replies);
     }
 
     /*addReply(reply: RawTweet): void {
@@ -85,8 +86,12 @@ class RawTweet{
         return this._id;
     }
 
+    get metrics(): Object{
+        return this._metrics;
+    }
+
     isRoot(): boolean{
-        return this._parent === null;
+        return this._parent === "" || this._parent === this._id;
     }
 }
 
