@@ -53,9 +53,13 @@ export class AppService {
   decryptTokens(req){
 
     const cookie = req.cookies['auth-cookie'];
-    const auth_token = AESDecipher(cookie[0],Buffer.from(cookie[1].data));
-
-    return auth_token;
+    if (cookie){
+      const auth_token = AESDecipher(cookie[0],Buffer.from(cookie[1].data));
+      return auth_token;
+    }
+    else{
+      return process.env.BEARER_TOKEN;
+    }
 
   }
 

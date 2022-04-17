@@ -19,7 +19,6 @@ async function sendTweet(text: string, response: string ="", quoted: string=""):
 
   const b = a?.data;
 
-  console.log("Send Tweet: ", b);
   return b.data;
 
 }

@@ -19,8 +19,6 @@ async function sendBigTweet(text: string, response: string = "", quoted: string 
 
     }
 
-    
-
     return conversation;
 
 }

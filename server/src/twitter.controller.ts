@@ -142,6 +142,27 @@ export class TwitterController {
 
   }
 
+  @Post('getFollowers')
+  getFollowers(@Req() req: Request): Promise<any>{
+
+    const auth_token = this.appService.decryptTokens(req);
+
+    const baseURL = `https://api.twitter.com/2/users/${req.body.id}/followers`;
+    
+    var params: string = "?"; //Do not remove
+    params += "max_results=50";
+
+    if (req.body.p_token && req.body.p_token != "") {
+      params += "&";
+      params += `pagination_token=${req.body.p_token}`;
+    }
+
+    const fullURL = baseURL+params;
+
+    return getRequest(fullURL,auth_token);
+
+  }
+
   @Post('mockup')
   mockup(@Req() req: Request): Promise<any>{
 
